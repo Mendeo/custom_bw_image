@@ -93,7 +93,7 @@ function doImageProcess()
 	const imageDataInitial = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
 
 	makeBlackWhite(blackPower.valueAsNumber);
-	blackPower.addEventListener('input', () =>
+	blackPower.addEventListener('change', () =>
 	{
 		makeBlackWhite(blackPower.valueAsNumber);
 	});

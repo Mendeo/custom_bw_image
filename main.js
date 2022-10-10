@@ -91,12 +91,12 @@ function doImageProcess()
 	blackPowerWidth();
 	refCanvasCtx.drawImage(inputImg, 0, 0);
 	const imageDataInitial = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
+
 	makeBlackWhite(blackPower.valueAsNumber);
 	blackPower.addEventListener('input', () =>
 	{
 		makeBlackWhite(blackPower.valueAsNumber);
 	});
-
 	function makeBlackWhite(power)
 	{
 		powerSpan.innerText = power;
@@ -106,10 +106,12 @@ function doImageProcess()
 		let currentPercent = 0;
 		let percent = 0;
 		let i = 0;
+		let calcSpeed = 0; //0 - ещё не меряли, 1 - медленно, 2 - быстро
 		calc();
 		function calc()
 		{
-			let calcPercentStartTime = new Date();
+			let calcPercentStartTime;
+			if (calcSpeed === 0) calcPercentStartTime = new Date();
 			while(percent === currentPercent)
 			{
 				const avg = (imageDataInitial.data[i] + imageDataInitial.data[i + 1] + imageDataInitial.data[i + 2]) / 3;
@@ -130,13 +132,23 @@ function doImageProcess()
 			}
 			currentPercent = percent;
 			progressBar_bar.value = currentPercent;
-			const calcPercentTimeLength = (new Date()) - calcPercentStartTime;
-			//console.log(calcPercentTimeLength);
-			if (calcPercentTimeLength > 1) //Если, считается долго
+			if (calcSpeed === 0) //Если ещё не измеряли скорость расчётов, то измеряем сейчас.
+			{
+				let calcPercentTimeLength = (new Date()) - calcPercentStartTime;
+				if (calcPercentTimeLength > 1) //Расчёт одного процента дольше миллисекунды.
+				{
+					calcSpeed = 1;
+				}
+				else
+				{
+					calcSpeed = 2;
+				}
+			}
+			if (calcSpeed === 1) //Если, считается долго
 			{
 				setTimeout(calc, 0); //Даём время обновиться прогресс бару
 			}
-			else //Если считается быстро - не обновляем прогресс бар
+			else if (calcSpeed === 2) //Если считается быстро - не обновляем прогресс бар
 			{
 				calc();
 			}

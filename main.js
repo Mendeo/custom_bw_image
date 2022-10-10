@@ -3,33 +3,45 @@ const inputImg = document.getElementById('inputImage');
 const blackPower = document.getElementById('blackPower');
 const powerSpan = document.querySelector('#blackPower + span');
 const outputImg = document.getElementById('outputImage');
+const inputFileEl = document.getElementById('inputFile');
+
+const refCanvas = document.createElement('canvas');
+const refCanvasCtx = refCanvas.getContext('2d', { willReadFrequently: true });
 
 const refImg = new Image();
-refImg.src = 'q.png';
-inputImg.src = refImg.src;
-
-if (refImg.complete)
+inputFileEl.addEventListener("change", () =>
 {
-	main();
-}
-else
-{
-	refImg.addEventListener('load', () =>
+	const imgFile = inputFileEl.files[0];
+	if (imgFile.type.startsWith('image/'))
 	{
-		main();
-	});
-}
+		const reader = new FileReader();
+		reader.readAsDataURL(imgFile);
+		reader.addEventListener('load', () =>
+		{
+			refImg.src = reader.result;
+			inputImg.src = refImg.src;
+			if (refImg.complete)
+			{
+				main();
+			}
+			else
+			{
+				refImg.addEventListener('load', () =>
+				{
+					main();
+				});
+			}
+		});
+	}
+});
 
 function main()
 {
-	const refCanvas = document.createElement('canvas');
-	const refCanvasCtx = refCanvas.getContext('2d', { willReadFrequently: true });
-
 	refCanvas.width = refImg.width;
 	refCanvas.height = refImg.height;
+	refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height)
 	console.log(refImg.width);
 	refCanvasCtx.drawImage(inputImg, 0, 0);
-	
 
 	const imageDataInitial = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
 

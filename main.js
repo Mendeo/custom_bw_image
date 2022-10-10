@@ -5,6 +5,13 @@ const powerSpan = document.querySelector('#blackPower + span');
 const outputImg = document.getElementById('outputImage');
 const inputFileEl = document.getElementById('inputFile');
 
+blackPowerWidth();
+window.addEventListener('resize', blackPowerWidth);
+function blackPowerWidth()
+{
+	blackPower.style=`width: ${inputImg.width}px;`;
+}
+
 const refCanvas = document.createElement('canvas');
 const refCanvasCtx = refCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -12,40 +19,41 @@ const refImg = new Image();
 inputFileEl.addEventListener("change", () =>
 {
 	refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height);
-	const imgFile = inputFileEl.files[0];
-	if (imgFile.type.startsWith('image/'))
+	//Даём время на очистку канваса.
+	setTimeout(()=>
 	{
-		const reader = new FileReader();
-		reader.readAsDataURL(imgFile);
-		reader.addEventListener('load', () =>
+		const imgFile = inputFileEl.files[0];
+		if (imgFile.type.startsWith('image/'))
 		{
-			refImg.src = reader.result;
-			inputImg.src = refImg.src;
-			if (refImg.complete)
+			const reader = new FileReader();
+			reader.readAsDataURL(imgFile);
+			reader.addEventListener('load', () =>
 			{
-				main();
-			}
-			else
-			{
-				refImg.addEventListener('load', () =>
+				refImg.src = reader.result;
+				inputImg.src = refImg.src;
+				if (refImg.complete)
 				{
-					main();
-				});
-			}
-		});
-	}
+					doImageProcess();
+				}
+				else
+				{
+					refImg.addEventListener('load', () =>
+					{
+						doImageProcess();
+					});
+				}
+			});
+		}
+	}, 0);
 });
 
-function main()
+function doImageProcess()
 {
 	refCanvas.width = refImg.width;
 	refCanvas.height = refImg.height;
-	console.log(refImg.width);
+	blackPowerWidth();
 	refCanvasCtx.drawImage(inputImg, 0, 0);
-
 	const imageDataInitial = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
-
-	blackPower.style=`width: ${inputImg.width}px;`
 	makeBlackWhite(blackPower.valueAsNumber);
 	blackPower.addEventListener('input', () =>
 	{

@@ -4,6 +4,10 @@ const blackPower = document.getElementById('blackPower');
 const powerSpan = document.querySelector('#blackPower + span');
 const outputImg = document.getElementById('outputImage');
 const inputFileEl = document.getElementById('inputFile');
+const body = document.getElementsByTagName('body')[0];
+const imgBg = document.createElement('div');
+const progressBar = document.getElementById('progressBarContainer');
+const progressBar_bar = document.querySelector('#progressBarContainer progress');
 
 blackPowerWidth();
 window.addEventListener('resize', blackPowerWidth);
@@ -12,6 +16,39 @@ function blackPowerWidth()
 	blackPower.style=`width: ${inputImg.width}px;`;
 }
 
+imgBg.className = 'progress-bar-background';
+body.appendChild(imgBg);
+removeProgressBar();
+
+function showProgressBar()
+{
+	window.addEventListener('resize', showProgressBar);
+	fillBackground(); //Функция, которая растягивает серый фон по высоте на весь экран.
+	//Перерисовываем высоту серого фона при изменении размеров окна браузера.
+	imgBg.hidden = false;
+	progressBar.hidden = false;
+	const screenHeight = document.documentElement.clientHeight;
+	const screenWidth = document.documentElement.clientWidth;
+	const progressCoord = progressBar.getBoundingClientRect();
+	const progressWidth = progressCoord.right - progressCoord.left;
+	const progressHeight = progressCoord.bottom - progressCoord.top;
+	const left = Math.round(0.5 * (screenWidth - progressWidth));
+	const top = Math.round(0.5 * (screenHeight - progressHeight));
+	progressBar.style = `left: ${left}px; top: ${top}px`;
+}
+function removeProgressBar()
+{
+	window.removeEventListener('resize', showProgressBar);
+	imgBg.hidden = true;
+	progressBar.hidden = true;
+}
+function fillBackground()
+{
+	let height = (document.documentElement.clientHeight) + 'px';
+	imgBg.style.height = height;
+}
+
+//Обработка изображения.
 const refCanvas = document.createElement('canvas');
 const refCanvasCtx = refCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -64,16 +101,39 @@ function doImageProcess()
 	{
 		powerSpan.innerText = power;
 		const imageData = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
-		for (let i = 0; i < imageData.data.length; i += 4)
+		showProgressBar();
+		progressBar_bar.value = 0;
+		//Даём время установиться прогресс бару.
+		setTimeout(()=>
 		{
-			const avg = (imageDataInitial.data[i] + imageDataInitial.data[i + 1] + imageDataInitial.data[i + 2]) / 3;
-			let pointValue = avg > power ? 255 : 0;
-			imageData.data[i] = pointValue; // red
-			imageData.data[i + 1] = pointValue; // green
-			imageData.data[i + 2] = pointValue; // blue
-		}
-		refCanvasCtx.putImageData(imageData, 0, 0);
-		outputImg.src = refCanvas.toDataURL();
+			let currentPercent = 0;
+			let percent = 0;
+			let i = 0;
+			calc();
+			function calc()
+			{
+				while(percent === currentPercent)
+				{
+					const avg = (imageDataInitial.data[i] + imageDataInitial.data[i + 1] + imageDataInitial.data[i + 2]) / 3;
+					let pointValue = avg > power ? 255 : 0;
+					imageData.data[i] = pointValue; // red
+					imageData.data[i + 1] = pointValue; // green
+					imageData.data[i + 2] = pointValue; // blue
+					i += 4
+					if (i === imageData.data.length)
+					{
+						refCanvasCtx.putImageData(imageData, 0, 0);
+						outputImg.src = refCanvas.toDataURL();
+						removeProgressBar();
+						return;
+					};
+					percent = Math.floor(i * 100 / (imageData.data.length - 1));
+				}
+				currentPercent = percent;
+				progressBar_bar.value = currentPercent;
+				setTimeout(calc, 0); //Даём время обновиться прогресс бару
+			}
+		}, 0);
 	}
 }
 

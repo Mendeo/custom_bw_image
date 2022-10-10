@@ -9,6 +9,17 @@ const imgBg = document.createElement('div');
 const progressBar = document.getElementById('progressBarContainer');
 const progressBar_bar = document.querySelector('#progressBarContainer progress');
 
+let hasNoInputFileYet = true;
+startShowHide(true);
+
+function startShowHide(isHide)
+{
+	inputImg.hidden = isHide;
+	outputImg.hidden = isHide;
+	blackPower.hidden = isHide;
+	powerSpan.hidden = isHide;
+}
+
 blackPowerWidth();
 window.addEventListener('resize', blackPowerWidth);
 function blackPowerWidth()
@@ -66,6 +77,11 @@ inputFileEl.addEventListener("change", () =>
 		const imgFile = inputFileEl.files[0];
 		if (imgFile.type.startsWith('image/'))
 		{
+			if (hasNoInputFileYet)
+			{
+				startShowHide(false);
+				hasNoInputFileYet  = false;
+			}
 			const reader = new FileReader();
 			reader.readAsDataURL(imgFile);
 			reader.addEventListener('load', () =>

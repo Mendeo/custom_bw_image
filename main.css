@@ -1,13 +1,31 @@
 #inputImage
 {
 	max-width: 45vw;
-	max-height: 90vh;
+	max-height: 93vh;
+	margin-left: 3vw;
 }
 #outputImage
 {
 	max-width: 45vw;
-	max-height: 90vh;
+	max-height: 93vh;
 }
+
+@media screen and (max-width: 1080px)
+{
+	#inputImage
+	{
+		max-width: 95vw;
+		max-height: 45vh;
+		margin-top: 3vw;
+		margin-left: 0px;
+	}
+	#outputImage
+	{
+		max-width: 95vw;
+		max-height: 45vh;
+	}
+}
+
 #progressBarContainer
 {
 	position: fixed;

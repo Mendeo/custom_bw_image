@@ -7,13 +7,13 @@
 		<link rel="stylesheet" id="main-style-light" href="./main.css">
 	</head>
 	<body>
-		<img id="outputImage" alt="Выходное изображение">
-		<img id="inputImage" alt="Входное изображение">
+		<input type="file" id="inputFile">
 		<br>
 		<input type="range" title="Точка перехода к чёрному" id="blackPower" name="blackPower" min="0" max="255">
 		<span></span>
 		<br>
-		<input type="file" id="inputFile">
+		<img id="outputImage" alt="Выходное изображение">
+		<img id="inputImage" alt="Входное изображение">
 		<div id="progressBarContainer">
 			<label for="progressBar">Идёт обработка, подождите...</label>
 			<progress id="progressBar" max="100"></progress>

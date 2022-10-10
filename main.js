@@ -11,6 +11,7 @@ const refCanvasCtx = refCanvas.getContext('2d', { willReadFrequently: true });
 const refImg = new Image();
 inputFileEl.addEventListener("change", () =>
 {
+	refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height);
 	const imgFile = inputFileEl.files[0];
 	if (imgFile.type.startsWith('image/'))
 	{
@@ -39,7 +40,6 @@ function main()
 {
 	refCanvas.width = refImg.width;
 	refCanvas.height = refImg.height;
-	refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height)
 	console.log(refImg.width);
 	refCanvasCtx.drawImage(inputImg, 0, 0);
 

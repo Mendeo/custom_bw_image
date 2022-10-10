@@ -101,39 +101,46 @@ function doImageProcess()
 	{
 		powerSpan.innerText = power;
 		const imageData = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
-		showProgressBar();
 		progressBar_bar.value = 0;
-		//Даём время установиться прогресс бару.
-		setTimeout(()=>
+		showProgressBar();
+		let currentPercent = 0;
+		let percent = 0;
+		let i = 0;
+		calc();
+		function calc()
 		{
-			let currentPercent = 0;
-			let percent = 0;
-			let i = 0;
-			calc();
-			function calc()
+			let calcPercentStartTime = new Date();
+			while(percent === currentPercent)
 			{
-				while(percent === currentPercent)
+				const avg = (imageDataInitial.data[i] + imageDataInitial.data[i + 1] + imageDataInitial.data[i + 2]) / 3;
+				let pointValue = avg > power ? 255 : 0;
+				imageData.data[i] = pointValue; // red
+				imageData.data[i + 1] = pointValue; // green
+				imageData.data[i + 2] = pointValue; // blue
+				i += 4
+				if (i === imageData.data.length)
 				{
-					const avg = (imageDataInitial.data[i] + imageDataInitial.data[i + 1] + imageDataInitial.data[i + 2]) / 3;
-					let pointValue = avg > power ? 255 : 0;
-					imageData.data[i] = pointValue; // red
-					imageData.data[i + 1] = pointValue; // green
-					imageData.data[i + 2] = pointValue; // blue
-					i += 4
-					if (i === imageData.data.length)
-					{
-						refCanvasCtx.putImageData(imageData, 0, 0);
-						outputImg.src = refCanvas.toDataURL();
-						removeProgressBar();
-						return;
-					};
-					percent = Math.floor(i * 100 / (imageData.data.length - 1));
-				}
-				currentPercent = percent;
-				progressBar_bar.value = currentPercent;
+					refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height); //Так работает лучше.
+					refCanvasCtx.putImageData(imageData, 0, 0);
+					outputImg.src = refCanvas.toDataURL();
+					removeProgressBar();
+					return;
+				};
+				percent = Math.floor(i * 100 / (imageData.data.length - 1));
+			}
+			currentPercent = percent;
+			progressBar_bar.value = currentPercent;
+			const calcPercentTimeLength = (new Date()) - calcPercentStartTime;
+			//console.log(calcPercentTimeLength);
+			if (calcPercentTimeLength > 1) //Если, считается долго
+			{
 				setTimeout(calc, 0); //Даём время обновиться прогресс бару
 			}
-		}, 0);
+			else //Если считается быстро - не обновляем прогресс бар
+			{
+				calc();
+			}
+		}
 	}
 }
 

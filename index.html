@@ -10,8 +10,10 @@
 		<input type="file" id="inputFile">
 		<span hidden>Выбранный файл не является файлом изображения!</span>
 		<br>
-		<input type="range" title="Точка перехода к чёрному" id="blackPower" name="blackPower" min="0" max="255">
-		<span></span>
+		<div id="blackPowerContainer">
+			<input type="range" title="Точка перехода к чёрному" id="blackPower" name="blackPower" min="0" max="255">
+			<span></span>
+		</div>
 		<br>
 		<img id="outputImage" alt="Выходное изображение">
 		<img id="inputImage" alt="Входное изображение">

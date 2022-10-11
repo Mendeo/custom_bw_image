@@ -1,12 +1,12 @@
 #inputImage
 {
-	max-width: 45vw;
+	max-width: 49%;
 	max-height: 93vh;
-	margin-left: 3vw;
+	margin-left: 1rem;
 }
 #outputImage
 {
-	max-width: 45vw;
+	max-width: 49%;
 	max-height: 93vh;
 }
 #inputFile + span
@@ -17,18 +17,26 @@
 {
 	#inputImage
 	{
-		max-width: 95vw;
+		max-width: 95%;
 		max-height: 45vh;
-		margin-top: 3vw;
+		margin-top: 2rem;
 		margin-left: 0px;
 	}
 	#outputImage
 	{
-		max-width: 95vw;
+		max-width: 95%;
 		max-height: 45vh;
 	}
 }
-
+#blackPowerContainer
+{
+	display: flex;
+	align-items: center;
+}
+#blackPowerContainer span
+{
+	margin-left: 0.3rem;
+}
 #progressBarContainer
 {
 	position: fixed;

@@ -8,6 +8,7 @@ const body = document.getElementsByTagName('body')[0];
 const imgBg = document.createElement('div');
 const progressBar = document.getElementById('progressBarContainer');
 const progressBar_bar = document.querySelector('#progressBarContainer progress');
+const errorFileSpan = document.querySelector('#inputFile + span');
 
 let hasNoInputFileYet = true;
 startShowHide(true);
@@ -77,6 +78,7 @@ inputFileEl.addEventListener("change", () =>
 		const imgFile = inputFileEl.files[0];
 		if (imgFile.type.startsWith('image/'))
 		{
+			errorFileSpan.hidden = true;
 			if (hasNoInputFileYet)
 			{
 				startShowHide(false);
@@ -100,6 +102,10 @@ inputFileEl.addEventListener("change", () =>
 					});
 				}
 			});
+		}
+		else
+		{
+			errorFileSpan.hidden = false;
 		}
 	}, 0);
 });

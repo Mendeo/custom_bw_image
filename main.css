@@ -9,7 +9,10 @@
 	max-width: 45vw;
 	max-height: 93vh;
 }
-
+#inputFile + span
+{
+	color: red;
+}
 @media screen and (max-width: 1080px)
 {
 	#inputImage

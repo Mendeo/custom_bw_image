@@ -74,15 +74,38 @@
 	let calcSpeed;
 
 	const refImg = new Image();
-	inputFileEl.addEventListener('change', onNewImageFile);
+	inputFileEl.addEventListener('change', () =>
+	{
+		const imgFile = inputFileEl.files[0];
+		onNewImageFile(imgFile);
+	});
+	body.addEventListener('dragenter', (e) =>
+	{
+		e.preventDefault();
+		e.stopPropagation();
+	});
+	body.addEventListener('dragover', (e) =>
+	{
+		e.preventDefault();
+		e.stopPropagation();
+		body.style = 'background-color: var(--body-file-over);';
+	});
+	body.addEventListener('drop', (e)=>
+	{
+		e.preventDefault();
+		e.stopPropagation();
+		const dt = e.dataTransfer;
+		const imgFile = dt.files[0];
+		body.style = 'background-color: var(--body-color);';
+		onNewImageFile(imgFile);
+	});
 
-	function onNewImageFile()
+	function onNewImageFile(imgFile)
 	{
 		refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height);
 		//Даём время на очистку канваса.
 		setTimeout(()=>
 		{
-			const imgFile = inputFileEl.files[0];
 			if (imgFile.type.startsWith('image/'))
 			{
 				errorFileSpan.hidden = true;

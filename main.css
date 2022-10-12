@@ -1,3 +1,7 @@
+:root {
+	--body-color: white;
+	--body-file-over: rgb(182, 235, 160);
+  }
 #inputImage
 {
 	max-width: 49%;
@@ -64,4 +68,9 @@
 	left: 0px;
 	width: 100%;
 	z-index: 1;
+}
+body
+{
+	min-height: 95vh;
+	background-color: var(--body-color);
 }

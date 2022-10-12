@@ -1,13 +1,13 @@
 #inputImage
 {
 	max-width: 49%;
-	max-height: 93vh;
+	max-height: 90vh;
 	margin-left: 1rem;
 }
 #outputImage
 {
 	max-width: 49%;
-	max-height: 93vh;
+	max-height: 90vh;
 }
 #inputFile + span
 {
@@ -27,11 +27,15 @@
 		max-width: 95%;
 		max-height: 45vh;
 	}
-	#headerContainer
+	#buttonsContainer
 	{
 		flex-direction: column;
 		max-width: 95%;
 	}
+}
+#blackPower
+{
+	width: 100%;
 }
 #blackPowerContainer
 {
@@ -47,10 +51,9 @@
 	position: fixed;
 	z-index: 2;
 }
-#headerContainer
+#buttonsContainer
 {
 	display: flex;
-	max-width: 49%;
 	justify-content: space-between;
 }
 .progress-bar-background

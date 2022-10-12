@@ -12,6 +12,7 @@
 	const progressBar_bar = document.querySelector('#progressBarContainer progress');
 	const errorFileSpan = document.querySelector('#inputFile + span');
 	const saveHref = document.getElementById('saveResultHref');
+	const leftZoneContainer = document.getElementById('leftZoneContainer');
 
 	let hasNoInputFileYet = true;
 	startShowHide(true);
@@ -25,11 +26,11 @@
 		saveHref.hidden = isHide;
 	}
 
-	blackPowerWidth();
-	window.addEventListener('resize', blackPowerWidth);
-	function blackPowerWidth()
+	leftZoneContainerWidth();
+	window.addEventListener('resize', leftZoneContainerWidth);
+	function leftZoneContainerWidth()
 	{
-		blackPower.style = `width: ${inputImg.width}px;`;
+		leftZoneContainer.style = `width: ${inputImg.width}px;`;
 	}
 	powerSpan.innerText = blackPower.value;
 	blackPower.addEventListener('input', () => powerSpan.innerText = blackPower.value);
@@ -73,7 +74,9 @@
 	let calcSpeed;
 
 	const refImg = new Image();
-	inputFileEl.addEventListener('change', () =>
+	inputFileEl.addEventListener('change', onNewImageFile);
+
+	function onNewImageFile()
 	{
 		refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height);
 		//Даём время на очистку канваса.
@@ -112,13 +115,13 @@
 				errorFileSpan.hidden = false;
 			}
 		}, 0);
-	});
+	}
 
 	function doImageProcess()
 	{
 		refCanvas.width = refImg.width;
 		refCanvas.height = refImg.height;
-		blackPowerWidth();
+		leftZoneContainerWidth();
 		refCanvasCtx.drawImage(inputImg, 0, 0);
 		imageDataInitial = refCanvasCtx.getImageData(0, 0, refCanvas.width, refCanvas.height);
 		blackPower.removeEventListener('change', makeBlackWhite);

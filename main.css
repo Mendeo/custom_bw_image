@@ -27,6 +27,11 @@
 		max-width: 95%;
 		max-height: 45vh;
 	}
+	#headerContainer
+	{
+		flex-direction: column;
+		max-width: 95%;
+	}
 }
 #blackPowerContainer
 {
@@ -41,6 +46,12 @@
 {
 	position: fixed;
 	z-index: 2;
+}
+#headerContainer
+{
+	display: flex;
+	max-width: 49%;
+	justify-content: space-between;
 }
 .progress-bar-background
 {

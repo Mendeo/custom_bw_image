@@ -11,6 +11,7 @@
 	const progressBar = document.getElementById('progressBarContainer');
 	const progressBar_bar = document.querySelector('#progressBarContainer progress');
 	const errorFileSpan = document.querySelector('#inputFile + span');
+	const saveHref = document.getElementById('saveResultHref');
 
 	let hasNoInputFileYet = true;
 	startShowHide(true);
@@ -21,6 +22,7 @@
 		outputImg.hidden = isHide;
 		blackPower.hidden = isHide;
 		powerSpan.hidden = isHide;
+		saveHref.hidden = isHide;
 	}
 
 	blackPowerWidth();
@@ -32,7 +34,7 @@
 	powerSpan.innerText = blackPower.value;
 	blackPower.addEventListener('input', () => powerSpan.innerText = blackPower.value);
 
-	imgBg.className = 'custom-bw-image-progress-bar-background';
+	imgBg.className = 'progress-bar-background';
 	body.appendChild(imgBg);
 	removeProgressBar();
 
@@ -146,15 +148,17 @@
 				imageData.data[i] = pointValue; // red
 				imageData.data[i + 1] = pointValue; // green
 				imageData.data[i + 2] = pointValue; // blue
-				i += 4
+				i += 4;
 				if (i === imageData.data.length)
 				{
 					refCanvasCtx.clearRect(0, 0, refCanvas.width, refCanvas.height); //Так работает лучше.
 					refCanvasCtx.putImageData(imageData, 0, 0);
-					outputImg.src = refCanvas.toDataURL();
+					const ref = refCanvas.toDataURL();
+					outputImg.src = ref;
+					saveHref.href = ref;
 					removeProgressBar();
 					return;
-				};
+				}
 				percent = Math.floor(i * 100 / (imageData.data.length - 1));
 			}
 			currentPercent = percent;

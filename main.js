@@ -13,6 +13,7 @@
 	const errorFileSpan = document.querySelector('#inputFile + span');
 	const saveHref = document.getElementById('saveResultHref');
 	const leftZoneContainer = document.getElementById('leftZoneContainer');
+	const fixBlackPower = document.getElementById('fixBlackPower');
 
 	let hasNoInputFileYet = true;
 	startShowHide(true);

@@ -46,6 +46,10 @@
 {
 	width: 100%;
 }
+#blackPowerContainer > div
+{
+	width: 100%;
+}
 #blackPowerContainer
 {
 	display: flex;
@@ -73,6 +77,16 @@
 	left: 0px;
 	width: 100%;
 	z-index: 1;
+}
+#fixBlackPower
+{
+	position: absolute;
+	left: 300px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid red;
 }
 body
 {
